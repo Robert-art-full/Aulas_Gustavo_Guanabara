@@ -5,12 +5,14 @@ import java.util.Date;
 
 public class RelogioSwing extends JFrame {
 
-    private JLabel labelHora;
-    private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+    private JLabel labelDataHora;
+    private SimpleDateFormat formato =
+            new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
 
     public RelogioSwing() {
+
         setTitle("Relógio Swing");
-        setSize(400, 300);
+        setSize(450, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -27,32 +29,39 @@ public class RelogioSwing extends JFrame {
 
         painel.setLayout(new BorderLayout());
 
-        // Label da hora
-        labelHora = new JLabel();
-        labelHora.setHorizontalAlignment(SwingConstants.CENTER);
-        labelHora.setForeground(Color.WHITE);
-        labelHora.setFont(new Font("Arial", Font.BOLD, 36));
+        // Label da data e hora
+        labelDataHora = new JLabel();
+        labelDataHora.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDataHora.setForeground(Color.CYAN); // cor do texto
+        labelDataHora.setFont(new Font("Verdana", Font.BOLD, 28));
 
-        painel.add(labelHora, BorderLayout.CENTER);
+        painel.add(labelDataHora, BorderLayout.CENTER);
+
+        // Botão
+        JButton botao = new JButton("Atualizar Hora");
+        botao.setFont(new Font("Arial", Font.BOLD, 14));
+        botao.setBackground(Color.BLACK);
+        botao.setForeground(Color.WHITE);
+
+        botao.addActionListener(e -> atualizarDataHora());
+
+        painel.add(botao, BorderLayout.SOUTH);
+
         add(painel);
 
-        // Timer para atualizar a hora
-        Timer timer = new Timer(1000, e -> atualizarHora());
+        // Timer para atualizar automaticamente
+        Timer timer = new Timer(1000, e -> atualizarDataHora());
         timer.start();
 
-        atualizarHora();
+        atualizarDataHora();
         setVisible(true);
     }
 
-    private void atualizarHora() {
-        labelHora.setText(formatoHora.format(new Date()));
+    private void atualizarDataHora() {
+        labelDataHora.setText(formato.format(new Date()));
     }
 
     public static void main(String[] args) {
         new RelogioSwing();
     }
 }
-
-
-
-/*Para a imagem, escolhe uma imagem .jpg ou .png, arraste para a pasta "src" e testa*\
