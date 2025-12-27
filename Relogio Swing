@@ -1,0 +1,58 @@
+import javax.swing.*;
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class RelogioSwing extends JFrame {
+
+    private JLabel labelHora;
+    private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+
+    public RelogioSwing() {
+        setTitle("Relógio Swing");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Painel com imagem de fundo
+        JPanel painel = new JPanel() {
+            Image imagem = new ImageIcon("fundo.png").getImage();
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(imagem, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        painel.setLayout(new BorderLayout());
+
+        // Label da hora
+        labelHora = new JLabel();
+        labelHora.setHorizontalAlignment(SwingConstants.CENTER);
+        labelHora.setForeground(Color.WHITE);
+        labelHora.setFont(new Font("Arial", Font.BOLD, 36));
+
+        painel.add(labelHora, BorderLayout.CENTER);
+        add(painel);
+
+        // Timer para atualizar a hora
+        Timer timer = new Timer(1000, e -> atualizarHora());
+        timer.start();
+
+        atualizarHora();
+        setVisible(true);
+    }
+
+    private void atualizarHora() {
+        labelHora.setText(formatoHora.format(new Date()));
+    }
+
+    public static void main(String[] args) {
+        new RelogioSwing();
+    }
+}
+
+
+
+/*Para a imagem, escolhe uma imagem .jpg ou .png, arraste para a pasta "src" e testa*\
