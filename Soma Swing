@@ -1,0 +1,152 @@
+import javax.swing.*;
+import java.awt.*;
+
+class SomaSwing extends JFrame {
+
+    private JTextField campoNumero1;
+    private JTextField campoNumero2;
+    private JTextField campoResultado;
+    private String operacao = "";
+
+    public SomaSwing() {
+
+        setTitle("Calculadora");
+        setSize(360, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Painel principal
+        JPanel painel = new JPanel();
+        painel.setLayout(new BorderLayout(10, 10));
+        painel.setBackground(new Color(30, 30, 30));
+
+        // Fonte padrão
+        Font fonte = new Font("Arial", Font.BOLD, 16);
+
+        // Painel dos campos
+        JPanel painelCampos = new JPanel(new GridLayout(3, 2, 10, 10));
+        painelCampos.setBackground(new Color(30, 30, 30));
+
+        painelCampos.add(criarLabel("Número 1:", fonte));
+        campoNumero1 = criarCampo(fonte);
+        painelCampos.add(campoNumero1);
+
+        painelCampos.add(criarLabel("Número 2:", fonte));
+        campoNumero2 = criarCampo(fonte);
+        painelCampos.add(campoNumero2);
+
+        painelCampos.add(criarLabel("Resultado:", fonte));
+        campoResultado = criarCampo(fonte);
+        campoResultado.setEditable(false);
+        painelCampos.add(campoResultado);
+
+        // Painel dos botões
+        JPanel painelBotoes = new JPanel(new GridLayout(1, 5, 10, 10));
+        painelBotoes.setBackground(new Color(30, 30, 30));
+
+        JButton btnSoma = criarBotao("+");
+        JButton btnSub = criarBotao("-");
+        JButton btnMul = criarBotao("×");
+        JButton btnDiv = criarBotao("÷");
+        JButton btnLimpar = criarBotao("C");
+
+        painelBotoes.add(btnSoma);
+        painelBotoes.add(btnSub);
+        painelBotoes.add(btnMul);
+        painelBotoes.add(btnDiv);
+        painelBotoes.add(btnLimpar);
+
+        // Ações dos botões
+        btnSoma.addActionListener(e -> operacao = "+");
+        btnSub.addActionListener(e -> operacao = "-");
+        btnMul.addActionListener(e -> operacao = "*");
+        btnDiv.addActionListener(e -> operacao = "/");
+        btnLimpar.addActionListener(e -> limpar());
+
+        // Botão calcular
+        JButton btnCalcular = new JButton("Calcular");
+        btnCalcular.setFont(new Font("Arial", Font.BOLD, 18));
+        btnCalcular.setBackground(new Color(0, 150, 136));
+        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.addActionListener(e -> calcular());
+
+        // Adicionando ao painel principal
+        painel.add(painelCampos, BorderLayout.CENTER);
+        painel.add(painelBotoes, BorderLayout.NORTH);
+        painel.add(btnCalcular, BorderLayout.SOUTH);
+
+        add(painel);
+        setVisible(true);
+    }
+
+    // Métodos auxiliares
+    private JLabel criarLabel(String texto, Font fonte) {
+        JLabel label = new JLabel(texto);
+        label.setForeground(Color.WHITE);
+        label.setFont(fonte);
+        return label;
+    }
+
+    private JTextField criarCampo(Font fonte) {
+        JTextField campo = new JTextField();
+        campo.setFont(fonte);
+        return campo;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        botao.setFont(new Font("Arial", Font.BOLD, 18));
+        botao.setBackground(new Color(60, 60, 60));
+        botao.setForeground(Color.WHITE);
+        return botao;
+    }
+
+    private void calcular() {
+        try {
+            double n1 = Double.parseDouble(campoNumero1.getText());
+            double n2 = Double.parseDouble(campoNumero2.getText());
+            double resultado;
+
+            switch (operacao) {
+                case "+":
+                    resultado = n1 + n2;
+                    break;
+                case "-":
+                    resultado = n1 - n2;
+                    break;
+                case "*":
+                    resultado = n1 * n2;
+                    break;
+                case "/":
+                    if (n2 == 0) {
+                        JOptionPane.showMessageDialog(this,
+                                "Divisão por zero não é permitida!");
+                        return;
+                    }
+                    resultado = n1 / n2;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(this,
+                            "Selecione uma operação!");
+                    return;
+            }
+
+            campoResultado.setText(String.valueOf(resultado));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite apenas números válidos!");
+        }
+    }
+
+    private void limpar() {
+        campoNumero1.setText("");
+        campoNumero2.setText("");
+        campoResultado.setText("");
+        operacao = "";
+    }
+
+    public static void main(String[] args) {
+        new SomaSwing();
+    }
+}
