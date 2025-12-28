@@ -1,0 +1,161 @@
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+
+class CalculadoraIdade extends JFrame {
+
+    private JTextField campoDia, campoMes, campoAno;
+    private JTextField campoIdade, campoDias, campoSigno;
+
+    public CalculadoraIdade() {
+
+        setTitle("Calculadora de Idade");
+        setSize(500, 350);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        Font fonte = new Font("Arial", Font.BOLD, 14);
+
+        // Painel com imagem de fundo
+        JPanel painel = new JPanel() {
+            Image imagem = new ImageIcon("fundo.png").getImage();
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(imagem, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        painel.setLayout(new BorderLayout(10, 10));
+        painel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Painel dos campos
+        JPanel campos = new JPanel(new GridLayout(6, 2, 10, 10));
+        campos.setOpaque(false);
+
+        campos.add(criarLabel("Dia:", fonte));
+        campoDia = criarCampo(fonte);
+        campos.add(campoDia);
+
+        campos.add(criarLabel("Mês:", fonte));
+        campoMes = criarCampo(fonte);
+        campos.add(campoMes);
+
+        campos.add(criarLabel("Ano:", fonte));
+        campoAno = criarCampo(fonte);
+        campos.add(campoAno);
+
+        campos.add(criarLabel("Idade:", fonte));
+        campoIdade = criarCampo(fonte);
+        campoIdade.setEditable(false);
+        campos.add(campoIdade);
+
+        campos.add(criarLabel("Dias vividos:", fonte));
+        campoDias = criarCampo(fonte);
+        campoDias.setEditable(false);
+        campos.add(campoDias);
+
+        campos.add(criarLabel("Signo:", fonte));
+        campoSigno = criarCampo(fonte);
+        campoSigno.setEditable(false);
+        campos.add(campoSigno);
+
+        // Painel dos botões
+        JPanel botoes = new JPanel(new GridLayout(1, 2, 10, 10));
+        botoes.setOpaque(false);
+
+        JButton btnCalcular = criarBotao("Calcular");
+        JButton btnLimpar = criarBotao("Limpar");
+
+        btnCalcular.addActionListener(e -> calcular());
+        btnLimpar.addActionListener(e -> limpar());
+
+        botoes.add(btnCalcular);
+        botoes.add(btnLimpar);
+
+        painel.add(campos, BorderLayout.CENTER);
+        painel.add(botoes, BorderLayout.SOUTH);
+
+        add(painel);
+        setVisible(true);
+    }
+
+    private JLabel criarLabel(String texto, Font fonte) {
+        JLabel label = new JLabel(texto);
+        label.setForeground(Color.WHITE);
+        label.setFont(fonte);
+        return label;
+    }
+
+    private JTextField criarCampo(Font fonte) {
+        JTextField campo = new JTextField();
+        campo.setFont(fonte);
+        return campo;
+    }
+
+    private JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        botao.setFont(new Font("Arial", Font.BOLD, 16));
+        botao.setBackground(new Color(0, 150, 136));
+        botao.setForeground(Color.WHITE);
+        return botao;
+    }
+
+    private void calcular() {
+        try {
+            int dia = Integer.parseInt(campoDia.getText());
+            int mes = Integer.parseInt(campoMes.getText());
+            int ano = Integer.parseInt(campoAno.getText());
+
+            LocalDate nascimento = LocalDate.of(ano, mes, dia);
+            LocalDate hoje = LocalDate.now();
+
+            if (nascimento.isAfter(hoje)) {
+                JOptionPane.showMessageDialog(this,
+                        "A data não pode ser no futuro!");
+                return;
+            }
+
+            Period idade = Period.between(nascimento, hoje);
+            long diasVividos = ChronoUnit.DAYS.between(nascimento, hoje);
+
+            campoIdade.setText(
+                    idade.getYears() + " anos, " +
+                            idade.getMonths() + " meses e " +
+                            idade.getDays() + " dias"
+            );
+
+            campoDias.setText(String.valueOf(diasVividos));
+            campoSigno.setText(calcularSigno(dia, mes));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite uma data válida!");
+        }
+    }
+
+    private String calcularSigno(int dia, int mes) {
+        String[] signos = {
+                "Capricórnio", "Aquário", "Peixes", "Áries",
+                "Touro", "Gêmeos", "Câncer", "Leão",
+                "Virgem", "Libra", "Escorpião", "Sagitário"
+        };
+
+        int[] fim = {19, 18, 20, 20, 20, 20, 22, 22, 22, 22, 21, 21};
+
+        return (dia <= fim[mes - 1]) ? signos[mes - 1] : signos[mes % 12];
+    }
+
+    private void limpar() {
+        campoDia.setText("");
+        campoMes.setText("");
+        campoAno.setText("");
+        campoIdade.setText("");
+        campoDias.setText("");
+        campoSigno.setText("");
+    }
+
+    public static void main(String[] args) {
+        new CalculadoraIdade();
+    }
+}
