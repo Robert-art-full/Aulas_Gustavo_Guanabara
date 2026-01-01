@@ -1,0 +1,135 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+class OperadoresSwing extends JFrame {
+
+    private JTextField txtN1, txtN2, txtResultado;
+
+    public OperadoresSwing() {
+        setTitle("Calculadora Swing");
+        setSize(320, 280);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        // Fonte padrão
+        Font fonte = new Font("Arial", Font.BOLD, 14);
+
+        // Labels
+        JLabel lblN1 = new JLabel("Número 1:");
+        lblN1.setBounds(20, 20, 100, 25);
+        lblN1.setFont(fonte);
+        add(lblN1);
+
+        JLabel lblN2 = new JLabel("Número 2:");
+        lblN2.setBounds(20, 60, 100, 25);
+        lblN2.setFont(fonte);
+        add(lblN2);
+
+        JLabel lblResultado = new JLabel("Resultado:");
+        lblResultado.setBounds(20, 200, 100, 25);
+        lblResultado.setFont(fonte);
+        add(lblResultado);
+
+        // Campos de texto
+        txtN1 = new JTextField();
+        txtN1.setBounds(120, 20, 160, 25);
+        add(txtN1);
+
+        txtN2 = new JTextField();
+        txtN2.setBounds(120, 60, 160, 25);
+        add(txtN2);
+
+        txtResultado = new JTextField();
+        txtResultado.setBounds(120, 200, 160, 25);
+        txtResultado.setEditable(false);
+        txtResultado.setBackground(Color.LIGHT_GRAY);
+        add(txtResultado);
+
+        // Botões de operações
+        JButton btnSoma = criarBotao("+", Color.GREEN);
+        btnSoma.setBounds(20, 110, 60, 35);
+
+        JButton btnSub = criarBotao("-", Color.CYAN);
+        btnSub.setBounds(90, 110, 60, 35);
+
+        JButton btnMult = criarBotao("*", Color.ORANGE);
+        btnMult.setBounds(160, 110, 60, 35);
+
+        JButton btnDiv = criarBotao("/", Color.PINK);
+        btnDiv.setBounds(230, 110, 60, 35);
+
+        // Botão limpar
+        JButton btnLimpar = criarBotao("Limpar", Color.RED);
+        btnLimpar.setBounds(90, 155, 120, 35);
+
+        add(btnSoma);
+        add(btnSub);
+        add(btnMult);
+        add(btnDiv);
+        add(btnLimpar);
+
+        // Ações dos botões
+        btnSoma.addActionListener(e -> calcular("+"));
+        btnSub.addActionListener(e -> calcular("-"));
+        btnMult.addActionListener(e -> calcular("*"));
+        btnDiv.addActionListener(e -> calcular("/"));
+        btnLimpar.addActionListener(e -> limparCampos());
+    }
+
+    // Método para criar botões padronizados
+    private JButton criarBotao(String texto, Color cor) {
+        JButton botao = new JButton(texto);
+        botao.setBackground(cor);
+        botao.setFont(new Font("Arial", Font.BOLD, 14));
+        return botao;
+    }
+
+    // Método para realizar os cálculos
+    private void calcular(String operacao) {
+        try {
+            double n1 = Double.parseDouble(txtN1.getText());
+            double n2 = Double.parseDouble(txtN2.getText());
+            double resultado = 0;
+
+            switch (operacao) {
+                case "+":
+                    resultado = n1 + n2;
+                    break;
+                case "-":
+                    resultado = n1 - n2;
+                    break;
+                case "*":
+                    resultado = n1 * n2;
+                    break;
+                case "/":
+                    if (n2 == 0) {
+                        JOptionPane.showMessageDialog(this,
+                                "Não é possível dividir por zero!");
+                        return;
+                    }
+                    resultado = n1 / n2;
+                    break;
+            }
+
+            txtResultado.setText(String.valueOf(resultado));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite apenas números válidos!");
+        }
+    }
+
+    // Método para limpar os campos
+    private void limparCampos() {
+        txtN1.setText("");
+        txtN2.setText("");
+        txtResultado.setText("");
+    }
+
+    // Método principal
+    public static void main(String[] args) {
+        new     OperadoresSwing().setVisible(true);
+    }
+}
