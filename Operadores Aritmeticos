@@ -1,0 +1,20 @@
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Main {
+    public static void main(String[] args) {
+        
+        /* "+" --> adição --> 5+2 = 7
+        /* "-" --> subtração --> 5-2 = 3
+        /* "*" --> multiplicação --> 5*2 = 10
+        /* "/" --> divisão --> 5/2 = 2.5
+        /* "%" --> resto --> 5%2 = 1 
+         */
+        
+        int n1 = 3;
+        int n2 = 5;
+        float m = n1 + n2/2; /*com o (parenteses), ele soma primeiro o calculo dentro
+                             sem o (parenteses), ele soma primeiro da divisão depois o resto do calculo*/
+        System.out.println("A media é igual a " + m);
+
+    }
+}
