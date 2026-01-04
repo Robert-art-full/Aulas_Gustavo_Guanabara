@@ -16,7 +16,15 @@ public class Main {
          "*=" --> multiplicação e atribuir --> a *= b --> a = a * b
          "/=" --> dividir e atribuir --> a /= b --> a = a / b
          "%=" --> resto e atribuir --> a %= b --> a = a % b
-         /*
+         Arredondamentos
+         abs --> valor absoluto --> Math.abs(-10) --> 10
+         floor --> arredonda para baixo --> Math.floor(3.9) --> 3
+         ceil --> arredonda para cima --> Math.ceil(4.2) --> 5
+         round --> arredonda aritmeticamente --> Math.round(5.6) --> 6
+         Gerador de Numeros
+         Math.random() --> 0.0 a 1.0
+         */
+
 
          /*
         int n1 = 3;
@@ -36,9 +44,18 @@ public class Main {
         // tem uma diferença entre você colocar o "++" antes e depois do numero
 
 
-        int x = 4;
+        /*int x = 4;
         x += 2; // x = x + 2
-        System.out.println(x);
+        System.out.println(x);*/
+
+        /*float v = 8.3f;
+        int ar = (int) Math.floor(v); /*se quiser arredondar para baixo é (floor), se quiser para cima (ceil)
+        System.out.println(ar);*/
+
+        double ale = Math.random();
+        /*int n = (int) (5 + ale * (10-5));*/
+        int n = (int) (15 + ale * (50-15));
+        System.out.println(n);
 
     }
 }
