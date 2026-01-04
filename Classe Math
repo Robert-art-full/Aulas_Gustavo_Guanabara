@@ -1,0 +1,144 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+ class ClasseMath extends JFrame {
+     /*
+     PI --> constante π --> Math.PI --> 3.1415...
+     pow ---> exponenciação --> Math.pow(5,2) --> 25
+     sqrt --> raiz quadrada --> Math.sqrt(25) --> 5
+     cbrt --> raiz cúbica --> Math.cbrt(27) --> 3
+      */
+
+    private JTextField campo;
+    private double num1 = 0;
+    private String operador = "";
+
+    public ClasseMath() {
+        setTitle("Calculadora Completa");
+        setSize(350, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        campo = new JTextField();
+        campo.setFont(new Font("Arial", Font.BOLD, 20));
+        campo.setHorizontalAlignment(JTextField.RIGHT);
+        campo.setEditable(false);
+
+        JPanel painel = new JPanel(new GridLayout(5, 4, 5, 5));
+
+        // Botões
+        String[] botoes = {
+                "7", "8", "9", "/",
+                "4", "5", "6", "*",
+                "1", "2", "3", "-",
+                "0", "π", "=", "+"
+        };
+
+        for (String texto : botoes) {
+            JButton btn = new JButton(texto);
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
+            painel.add(btn);
+
+            btn.addActionListener(e -> tratarBotao(texto));
+        }
+
+        // Botões extras
+        JButton btnRaizQ = new JButton("√");
+        JButton btnRaizC = new JButton("∛");
+        JButton btnPot = new JButton("x²");
+        JButton btnLimpar = new JButton("C");
+
+        btnRaizQ.addActionListener(e -> raizQuadrada());
+        btnRaizC.addActionListener(e -> raizCubica());
+        btnPot.addActionListener(e -> potencia());
+        btnLimpar.addActionListener(e -> campo.setText(""));
+
+        JPanel painelExtra = new JPanel(new GridLayout(1, 4, 5, 5));
+        painelExtra.add(btnRaizQ);
+        painelExtra.add(btnRaizC);
+        painelExtra.add(btnPot);
+        painelExtra.add(btnLimpar);
+
+        add(campo, BorderLayout.NORTH);
+        add(painel, BorderLayout.CENTER);
+        add(painelExtra, BorderLayout.SOUTH);
+    }
+
+    private void tratarBotao(String texto) {
+        try {
+            if (texto.matches("[0-9]")) {
+                campo.setText(campo.getText() + texto);
+            }
+            else if (texto.equals("π")) {
+                campo.setText(String.valueOf(Math.PI));
+            }
+            else if (texto.equals("=")) {
+                double num2 = Double.parseDouble(campo.getText());
+                double resultado = 0;
+
+                switch (operador) {
+                    case "+": resultado = num1 + num2; break;
+                    case "-": resultado = num1 - num2; break;
+                    case "*": resultado = num1 * num2; break;
+                    case "/":
+                        if (num2 == 0) {
+                            throw new ArithmeticException("Divisão por zero");
+                        }
+                        resultado = num1 / num2;
+                        break;
+                }
+
+                campo.setText(String.valueOf(resultado));
+                operador = "";
+            }
+            else {
+                num1 = Double.parseDouble(campo.getText());
+                operador = texto;
+                campo.setText("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro na operação!");
+            campo.setText("");
+        }
+    }
+
+    private void raizQuadrada() {
+        try {
+            double x = Double.parseDouble(campo.getText());
+            if (x < 0) {
+                throw new ArithmeticException();
+            }
+            campo.setText(String.valueOf(Math.sqrt(x)));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Raiz quadrada inválida!");
+            campo.setText("");
+        }
+    }
+
+    private void raizCubica() {
+        try {
+            double x = Double.parseDouble(campo.getText());
+            campo.setText(String.valueOf(Math.cbrt(x)));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro!");
+            campo.setText("");
+        }
+    }
+
+    private void potencia() {
+        try {
+            double x = Double.parseDouble(campo.getText());
+            campo.setText(String.valueOf(Math.pow(x, 2)));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro!");
+            campo.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ClasseMath().setVisible(true);
+        });
+    }
+}
