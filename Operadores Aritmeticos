@@ -2,19 +2,43 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        
-        /* "+" --> adição --> 5+2 = 7
-        /* "-" --> subtração --> 5-2 = 3
-        /* "*" --> multiplicação --> 5*2 = 10
-        /* "/" --> divisão --> 5/2 = 2.5
-        /* "%" --> resto --> 5%2 = 1 
-         */
-        
+
+        /*
+        "+" --> adição --> 5+2 = 7
+         "-" --> subtração --> 5-2 = 3
+         "*" --> multiplicação --> 5*2 = 10
+         "/" --> divisão --> 5/2 = 2.5
+         "%" --> resto --> 5%2 = 1
+         "++" --> incremento --> a++ --> a = a + 1
+         "--" --> decremento --> a-- --> a = a - 1
+         "+=" --> somar e atribuir --> a += b --> a = a + b
+         "-=" --> subtrair e atribuir --> a -= b --> a = a - b
+         "*=" --> multiplicação e atribuir --> a *= b --> a = a * b
+         "/=" --> dividir e atribuir --> a /= b --> a = a / b
+         "%=" --> resto e atribuir --> a %= b --> a = a % b
+         /*
+
+         /*
         int n1 = 3;
         int n2 = 5;
-        float m = n1 + n2/2; /*com o (parenteses), ele soma primeiro o calculo dentro
-                             sem o (parenteses), ele soma primeiro da divisão depois o resto do calculo*/
+        float m = n1 + n2/2; // com o (parenteses), ele soma primeiro o calculo dentro
+                             sem o (parenteses), ele soma primeiro da divisão depois o resto do calculo
         System.out.println("A media é igual a " + m);
+        */
+
+        /*
+        int numero = 10;
+        int valor = 4 + numero++;
+        System.out.println(valor);
+        System.out.println(numero);
+        // o "++" acaba se tornando "1" */
+        // quando o "++" vem depois do numero significa "utilize o numero e depois de ele fazer essa soma, soma mais 1 no numero
+        // tem uma diferença entre você colocar o "++" antes e depois do numero
+
+
+        int x = 4;
+        x += 2; // x = x + 2
+        System.out.println(x);
 
     }
 }
