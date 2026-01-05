@@ -1,0 +1,104 @@
+import javax.swing.*;
+import java.awt.*;
+
+class SuperCalculadora extends JFrame {
+
+    private JTextField campoValor;
+    private JLabel lblResto, lblCubo, lblRaizQ, lblRaizC, lblAbsoluto;
+
+    public SuperCalculadora() {
+        setTitle("Calculadora Matemática");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        Font fonteTitulo = new Font("Segoe UI", Font.BOLD, 22);
+        Font fonteTexto = new Font("Segoe UI", Font.PLAIN, 15);
+
+        // Painel principal
+        JPanel painelPrincipal = new JPanel(new BorderLayout(15, 15));
+        painelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        painelPrincipal.setBackground(new Color(245, 247, 250));
+
+        // Título
+        JLabel titulo = new JLabel("Calculadora Matemática", JLabel.CENTER);
+        titulo.setFont(fonteTitulo);
+        titulo.setForeground(new Color(45, 62, 80));
+        painelPrincipal.add(titulo, BorderLayout.NORTH);
+
+        // Painel de entrada
+        JPanel painelEntrada = new JPanel();
+        painelEntrada.setBackground(new Color(245, 247, 250));
+
+        JLabel lblValor = new JLabel("Digite um valor:");
+        lblValor.setFont(fonteTexto);
+
+        campoValor = new JTextField(12);
+        campoValor.setFont(fonteTexto);
+
+        JButton btnCalcular = new JButton("Calcular");
+        btnCalcular.setFont(fonteTexto);
+        btnCalcular.setBackground(new Color(52, 152, 219));
+        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.setFocusPainted(false);
+
+        painelEntrada.add(lblValor);
+        painelEntrada.add(campoValor);
+        painelEntrada.add(btnCalcular);
+
+        painelPrincipal.add(painelEntrada, BorderLayout.CENTER);
+
+        // Painel de resultados
+        JPanel painelResultados = new JPanel(new GridLayout(5, 1, 8, 8));
+        painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
+        painelResultados.setBackground(Color.WHITE);
+
+        lblResto = criarLabel("Resto da divisão por 2:");
+        lblCubo = criarLabel("Elevado ao cubo:");
+        lblRaizQ = criarLabel("Raiz quadrada:");
+        lblRaizC = criarLabel("Raiz cúbica:");
+        lblAbsoluto = criarLabel("Valor absoluto:");
+
+        painelResultados.add(lblResto);
+        painelResultados.add(lblCubo);
+        painelResultados.add(lblRaizQ);
+        painelResultados.add(lblRaizC);
+        painelResultados.add(lblAbsoluto);
+
+        painelPrincipal.add(painelResultados, BorderLayout.SOUTH);
+
+        btnCalcular.addActionListener(e -> calcular());
+
+        add(painelPrincipal);
+    }
+
+    private JLabel criarLabel(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        return label;
+    }
+
+    private void calcular() {
+        try {
+            double valor = Double.parseDouble(campoValor.getText());
+
+            lblResto.setText("Resto da divisão por 2: " + (valor % 2));
+            lblCubo.setText("Elevado ao cubo: " + Math.pow(valor, 3));
+            lblRaizQ.setText("Raiz quadrada: " + Math.sqrt(valor));
+            lblRaizC.setText("Raiz cúbica: " + Math.cbrt(valor));
+            lblAbsoluto.setText("Valor absoluto: " + Math.abs(valor));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite um valor numérico válido!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new SuperCalculadora().setVisible(true);
+        });
+    }
+}
