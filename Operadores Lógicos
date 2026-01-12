@@ -1,0 +1,41 @@
+public class Main {
+    public static void main(String[] args) {
+
+        /* "&&" --> .E. --> true && false --> false
+        || --> .OU. --> false || true --> true
+        ^ --> .XOU. --> true ^ false --> false
+        ! --> .NAO. --> !false --> true
+
+        p - q - p && q
+        V - V -   V
+        V - F -   F
+        F - V -   F
+        F - F -   F
+
+        p - q - p || q
+        V - V -   V
+        V - F -   V
+        F - V -   V
+        F - F -   F
+
+        p - q - p ^ q
+        V - V -   F
+        V - F -   V
+        F - V -   V
+        F - F -   F
+
+        p - !p
+        V - F
+        F - F
+         */
+
+        int x, y, z;
+        x = 4;
+        y = 7;
+        z = 12;
+        boolean r;
+        r = (x<y ^ y<z)?true:false;
+        System.out.println(r);
+
+    }
+}
