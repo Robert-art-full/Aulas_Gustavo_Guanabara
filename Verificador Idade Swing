@@ -1,0 +1,135 @@
+import javax.swing.*;
+import java.time.LocalDate;
+import java.time.Period;
+
+class VerificadorIdadeSwing extends JFrame {
+
+    private JSpinner spnDia;
+    private JSpinner spnMes;
+    private JSpinner spnAno;
+    private JLabel lblResultado;
+
+    public VerificadorIdadeSwing() {
+        setTitle("Verificador de Idade Swing");
+        setSize(450, 260);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel painel = new JPanel();
+        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setContentPane(painel);
+
+        JLabel lblTitulo = new JLabel("Verificador de Idade");
+        lblTitulo.setFont(lblTitulo.getFont().deriveFont(18f));
+
+        JLabel lblData = new JLabel("Data de nascimento:");
+
+        // Labels (CRIADOS UMA ÚNICA VEZ)
+        JLabel lblDia = new JLabel("Dia");
+        JLabel lblMes = new JLabel("Mês");
+        JLabel lblAno = new JLabel("Ano");
+
+        // Spinners
+        spnDia = new JSpinner(new SpinnerNumberModel(1, 1, 31, 1));
+        spnMes = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
+        spnAno = new JSpinner(
+                new SpinnerNumberModel(2000, 1900, LocalDate.now().getYear(), 1)
+        );
+
+        JButton btnVerificar = new JButton("Verificar");
+        lblResultado = new JLabel(" ");
+        lblResultado.setFont(lblResultado.getFont().deriveFont(14f));
+
+        btnVerificar.addActionListener(e -> verificarIdade());
+
+        // Layout
+        GroupLayout layout = new GroupLayout(painel);
+        painel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(lblTitulo)
+                        .addComponent(lblData)
+                        .addGroup(
+                                layout.createSequentialGroup()
+                                        .addComponent(lblDia)
+                                        .addComponent(spnDia, 60, 60, 60)
+                                        .addComponent(lblMes)
+                                        .addComponent(spnMes, 60, 60, 60)
+                                        .addComponent(lblAno)
+                                        .addComponent(spnAno, 80, 80, 80)
+                        )
+                        .addComponent(btnVerificar)
+                        .addComponent(lblResultado)
+        );
+
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addGap(15)
+                        .addComponent(lblData)
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblDia)
+                                        .addComponent(spnDia)
+                                        .addComponent(lblMes)
+                                        .addComponent(spnMes)
+                                        .addComponent(lblAno)
+                                        .addComponent(spnAno)
+                        )
+                        .addGap(15)
+                        .addComponent(btnVerificar)
+                        .addGap(15)
+                        .addComponent(lblResultado)
+        );
+    }
+
+    private void verificarIdade() {
+        try {
+            int dia = (int) spnDia.getValue();
+            int mes = (int) spnMes.getValue();
+            int ano = (int) spnAno.getValue();
+
+            LocalDate nascimento = LocalDate.of(ano, mes, dia);
+            LocalDate hoje = LocalDate.now();
+
+            if (nascimento.isAfter(hoje)) {
+                lblResultado.setText("Data de nascimento inválida!");
+                return;
+            }
+
+            Period idade = Period.between(nascimento, hoje);
+
+            String status = idade.getYears() >= 18
+                    ? "Maior de idade ✅"
+                    : "Menor de idade ❌";
+
+            lblResultado.setText(
+                    "Idade: " + idade.getYears() + " anos, "
+                            + idade.getMonths() + " meses e "
+                            + idade.getDays() + " dias — " + status
+            );
+
+        } catch (Exception e) {
+            lblResultado.setText("Data inválida!");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Nimbus Look and Feel
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ignored) {}
+
+        SwingUtilities.invokeLater(() ->
+                new VerificadorIdadeSwing().setVisible(true)
+        );
+    }
+}
