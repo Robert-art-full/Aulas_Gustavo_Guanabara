@@ -1,0 +1,18 @@
+public class Main {
+    public static void main(String[] args) {
+
+        /* ">" --> Maior que --> 5>2 --> true
+        "<" --> Menor que --> 4<1 --> false
+        ">=" --> maior ou igual a --> 8>=3 --> true
+        "<=" --> menor ou igual a --> 6<=6 --> true
+        "==" --> igaul a --> 9==8 --> false
+        "!=" --> diferente de --> 4!=5 --> true
+         */
+
+        int n1, n2, r;
+        n1 = 14;
+        n2 = 18;
+        r = (n1>n2) ?n1+n2:n1-n2;
+        System.out.println(r);
+    }
+}
