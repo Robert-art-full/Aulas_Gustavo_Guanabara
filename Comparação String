@@ -1,0 +1,12 @@
+public class Main {
+    public static void main(String[] args) {
+
+        String nome1 = "Robert";
+        String nome2 = "Robert";
+        String nome3 = new String("Robert"); /*esse ultimo da diferente por ele usa o "new", então nao são iguais*/
+        String res;
+        res = (nome1.equals(nome3))?"igual":"diferente";
+        /*res = (nome1==nome3)?"igual":"diferente";*/
+        System.out.println(res);
+    }
+}
