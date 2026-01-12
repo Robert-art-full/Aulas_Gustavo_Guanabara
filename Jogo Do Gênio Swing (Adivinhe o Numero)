@@ -1,0 +1,129 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Random;
+
+public class JogoDoGenio extends JFrame {
+
+    private JLabel lblMensagem;
+    private JTextField txtPalpite;
+    private JButton btnChutar;
+    private JButton btnJogarNovamente;
+    private int numeroSecreto;
+    private Random random;
+    private int tentativas;
+    private final int MAX_TENTATIVAS = 3;
+
+    public JogoDoGenio() {
+        setTitle("Jogo do Gênio - Adivinhe o Número");
+        setSize(480, 230);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        random = new Random();
+        numeroSecreto = gerarNumeroSecreto();
+        tentativas = 0;
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10,10,10,10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        lblMensagem = new JLabel("Estou pensando em um número de 1 a 5. Tente adivinhar! Tentativas: 0/3", SwingConstants.CENTER);
+        lblMensagem.setFont(new Font("SansSerif", Font.BOLD, 16));
+        lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
+        lblMensagem.setForeground(Color.BLACK);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.weightx = 0;
+        add(lblMensagem, gbc);
+
+        txtPalpite = new JTextField();
+        txtPalpite.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 1.0;  // permite expandir horizontalmente
+        add(txtPalpite, gbc);
+
+        btnChutar = new JButton("Chutar");
+        btnChutar.setFont(new Font("SansSerif", Font.BOLD, 16));
+        gbc.gridx = 1;
+        gbc.weightx = 0;  // não expande
+        add(btnChutar, gbc);
+
+        btnJogarNovamente = new JButton("Jogar Novamente");
+        btnJogarNovamente.setFont(new Font("SansSerif", Font.BOLD, 16));
+        btnJogarNovamente.setVisible(false);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        add(btnJogarNovamente, gbc);
+
+        btnChutar.addActionListener(this::verificarPalpite);
+        btnJogarNovamente.addActionListener(e -> reiniciarJogo());
+
+        SwingUtilities.invokeLater(() -> txtPalpite.requestFocus());
+    }
+
+    private int gerarNumeroSecreto() {
+        return random.nextInt(5) + 1;
+    }
+
+    private void verificarPalpite(ActionEvent e) {
+        String texto = txtPalpite.getText().trim();
+        try {
+            int palpite = Integer.parseInt(texto);
+            if (palpite < 1 || palpite > 5) {
+                setMensagem("Digite um número entre 1 e 5!", Color.BLACK);
+                return;
+            }
+
+            tentativas++;
+
+            if (palpite == numeroSecreto) {
+                setMensagem("🎉 Parabéns! Você acertou! O número era " + numeroSecreto + ".", new Color(0, 128, 0));
+                finalizarJogo();
+            } else {
+                if (tentativas >= MAX_TENTATIVAS) {
+                    setMensagem("❌ Você errou! O número era " + numeroSecreto + ". Suas tentativas acabaram.", Color.RED);
+                    finalizarJogo();
+                } else {
+                    setMensagem("❌ Errado! Eu estava pensando no número " + numeroSecreto + ". Tente de novo! Tentativas: " + tentativas + "/" + MAX_TENTATIVAS, Color.RED);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            setMensagem("Por favor, digite um número válido!", Color.BLACK);
+        } finally {
+            txtPalpite.setText("");
+            txtPalpite.requestFocus();
+        }
+    }
+
+    private void setMensagem(String mensagem, Color cor) {
+        lblMensagem.setText(mensagem);
+        lblMensagem.setForeground(cor);
+    }
+
+    private void finalizarJogo() {
+        btnChutar.setEnabled(false);
+        btnJogarNovamente.setVisible(true);
+    }
+
+    private void reiniciarJogo() {
+        numeroSecreto = gerarNumeroSecreto();
+        tentativas = 0;
+        setMensagem("Estou pensando em um número de 1 a 5. Tente adivinhar! Tentativas: 0/" + MAX_TENTATIVAS, Color.BLACK);
+        btnChutar.setEnabled(true);
+        btnJogarNovamente.setVisible(false);
+        txtPalpite.setText("");
+        txtPalpite.requestFocus();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JogoDoGenio jogo = new JogoDoGenio();
+            jogo.setVisible(true);
+        });
+    }
+}
