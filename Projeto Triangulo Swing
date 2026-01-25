@@ -1,0 +1,156 @@
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+
+class ProjetoTriangulo extends JFrame {
+
+    private JSlider sldA, sldB, sldC;
+    private JLabel lblA, lblB, lblC, lblInfo;
+    private PainelDesenho painelDesenho;
+
+    public ProjetoTriangulo() {
+        setTitle("Tipos de Triângulo");
+        setSize(700, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
+
+        // ===== Painel de controles =====
+        JPanel painelControle = new JPanel(new GridLayout(4, 2, 10, 10));
+
+        sldA = criarSlider();
+        sldB = criarSlider();
+        sldC = criarSlider();
+
+        lblA = new JLabel("10");
+        lblB = new JLabel("10");
+        lblC = new JLabel("10");
+
+        painelControle.add(new JLabel("Segmento a"));
+        painelControle.add(criarPainelSlider(sldA, lblA));
+
+        painelControle.add(new JLabel("Segmento b"));
+        painelControle.add(criarPainelSlider(sldB, lblB));
+
+        painelControle.add(new JLabel("Segmento c"));
+        painelControle.add(criarPainelSlider(sldC, lblC));
+
+        JButton btnVerificar = new JButton("Verificar");
+        btnVerificar.addActionListener(e -> verificar());
+
+        lblInfo = new JLabel(" ", JLabel.CENTER);
+        lblInfo.setFont(new Font("Arial", Font.BOLD, 13));
+
+        painelControle.add(btnVerificar);
+        painelControle.add(lblInfo);
+
+        add(painelControle, BorderLayout.WEST);
+
+        // ===== Painel de desenho =====
+        painelDesenho = new PainelDesenho();
+        add(painelDesenho, BorderLayout.CENTER);
+    }
+
+    private JSlider criarSlider() {
+        JSlider slider = new JSlider(1, 30, 10);
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                atualizarLabels();
+                painelDesenho.repaint();
+            }
+        });
+        return slider;
+    }
+
+    private JPanel criarPainelSlider(JSlider slider, JLabel label) {
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(slider, BorderLayout.CENTER);
+        p.add(label, BorderLayout.EAST);
+        return p;
+    }
+
+    private void atualizarLabels() {
+        lblA.setText(String.valueOf(sldA.getValue()));
+        lblB.setText(String.valueOf(sldB.getValue()));
+        lblC.setText(String.valueOf(sldC.getValue()));
+    }
+
+    private void verificar() {
+        int a = sldA.getValue();
+        int b = sldB.getValue();
+        int c = sldC.getValue();
+
+        if (!formaTriangulo(a, b, c)) {
+            lblInfo.setText("Não forma um triângulo");
+            return;
+        }
+
+        String tipoLado = tipoPorLado(a, b, c);
+        String tipoAngulo = tipoPorAngulo(a, b, c);
+
+        lblInfo.setText(tipoLado + " | " + tipoAngulo);
+    }
+
+    private boolean formaTriangulo(int a, int b, int c) {
+        return a < b + c && b < a + c && c < a + b;
+    }
+
+    private String tipoPorLado(int a, int b, int c) {
+        if (a == b && b == c) return "Equilátero";
+        if (a == b || a == c || b == c) return "Isósceles";
+        return "Escaleno";
+    }
+
+    private String tipoPorAngulo(int a, int b, int c) {
+        int x = Math.max(a, Math.max(b, c));
+        int y, z;
+
+        if (x == a) { y = b; z = c; }
+        else if (x == b) { y = a; z = c; }
+        else { y = a; z = b; }
+
+        int x2 = x * x;
+        int soma = y * y + z * z;
+
+        if (x2 == soma) return "Retângulo";
+        if (x2 < soma) return "Acutângulo";
+        return "Obtusângulo";
+    }
+
+    // ===== Classe do desenho =====
+    class PainelDesenho extends JPanel {
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            int a = sldA.getValue();
+            int b = sldB.getValue();
+            int c = sldC.getValue();
+
+            if (!formaTriangulo(a, b, c)) return;
+
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.BLUE);
+
+            // Coordenadas simples (escala visual)
+            int x1 = 100, y1 = 250;
+            int x2 = x1 + a * 8, y2 = 250;
+            int x3 = x1 + (b * 4), y3 = 250 - c * 6;
+
+            g2.fillPolygon(
+                    new int[]{x1, x2, x3},
+                    new int[]{y1, y2, y3},
+                    3
+            );
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ProjetoTriangulo().setVisible(true);
+        });
+    }
+}
