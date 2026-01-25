@@ -1,0 +1,78 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+class ProgramasPernas extends JFrame {
+
+    private JLabel lblResultado;
+
+    public ProgramasPernas() {
+        setTitle("Classificador de Ser");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Layout
+        setLayout(new BorderLayout());
+
+        // Título
+        JLabel lblTitulo = new JLabel("Escolha o número de pernas", JLabel.CENTER);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+        add(lblTitulo, BorderLayout.NORTH);
+
+        // Painel de botões
+        JPanel painelBotoes = new JPanel(new GridLayout(2, 3, 10, 10));
+
+        int[] opcoes = {1, 2, 4, 6, 8, 0};
+
+        for (int pernas : opcoes) {
+            JButton btn = new JButton(pernas == 0 ? "Outro" : pernas + " pernas");
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    classificar(pernas);
+                }
+            });
+            painelBotoes.add(btn);
+        }
+
+        add(painelBotoes, BorderLayout.CENTER);
+
+        // Resultado
+        lblResultado = new JLabel("Tipo: ", JLabel.CENTER);
+        lblResultado.setFont(new Font("Arial", Font.BOLD, 14));
+        add(lblResultado, BorderLayout.SOUTH);
+    }
+
+    private void classificar(int pernas) {
+        String tipo;
+
+        switch (pernas) {
+            case 1:
+                tipo = "saci";
+                break;
+            case 2:
+                tipo = "bípede";
+                break;
+            case 4:
+                tipo = "quadrúpede";
+                break;
+            case 6:
+            case 8:
+                tipo = "ET";
+                break;
+            default:
+                tipo = "desconhecido";
+        }
+
+        lblResultado.setText("Tipo: " + tipo);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ProgramasPernas().setVisible(true);
+        });
+    }
+}
