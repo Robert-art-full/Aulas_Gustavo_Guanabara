@@ -1,0 +1,32 @@
+import java.util.Scanner;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Main{
+    private static String tipo;
+
+    public static void main(String[] args) {
+        Scanner tec = new Scanner(System.in);
+        System.out.println("Quantas Pernas?");
+        int perna = tec.nextInt();
+        System.out.println("Isso é um(a) ");
+        switch (perna) {
+            case 1:
+                tipo = "Saci";
+                break;
+            case 2:
+                tipo = "Bípede";
+                break;
+            case 4:
+                tipo = "Quadrúpede";
+                break;
+            case 6, 8:
+                tipo = "Aranha";
+                break;
+            default:
+                tipo = "ET";
+                break;
+        }
+        System.out.println(tipo);
+    }
+}
