@@ -1,0 +1,99 @@
+// Importa as bibliotecas do Swing
+import javax.swing.*;
+import java.awt.event.*;
+
+class VotacaoSwing extends JFrame {
+
+    // Botão que inicia a verificação
+    private JButton btnVotar;
+
+    // Construtor da janela
+    public VotacaoSwing() {
+
+        // Título da janela
+        setTitle("Sistema de Votação");
+
+        // Tamanho da janela
+        setSize(300, 150);
+
+        // Fecha o programa ao clicar no X
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Centraliza a janela
+        setLocationRelativeTo(null);
+
+        // Layout simples
+        setLayout(null);
+
+        // Criação do botão
+        btnVotar = new JButton("Verificar Voto");
+        btnVotar.setBounds(70, 40, 150, 30);
+        add(btnVotar);
+
+        // Ação do botão
+        btnVotar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Abre uma caixa pedindo a idade
+                String entrada = JOptionPane.showInputDialog(
+                        null,
+                        "Digite sua idade:",
+                        "Entrada de Dados",
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                // Se clicar em cancelar, não faz nada
+                if (entrada == null) {
+                    return;
+                }
+
+                try {
+                    // Converte a idade para inteiro
+                    int idade = Integer.parseInt(entrada);
+                    String resultado;
+
+                    // Regras da votação
+                    if (idade < 0) {
+                        resultado = "Idade inválida.";
+                    }
+                    else if (idade < 16) {
+                        resultado = "Você NÃO pode votar.";
+                    }
+                    else if (idade < 18) {
+                        resultado = "Seu voto é OPCIONAL.";
+                    }
+                    else if (idade <= 70) {
+                        resultado = "Seu voto é OBRIGATÓRIO.";
+                    }
+                    else {
+                        resultado = "Seu voto é OPCIONAL.";
+                    }
+
+                    // Mostra o resultado
+                    JOptionPane.showMessageDialog(
+                            null,
+                            resultado,
+                            "Resultado",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+
+                } catch (NumberFormatException ex) {
+                    // Caso digite algo que não seja número
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Digite apenas números!",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+        });
+    }
+
+    // Método principal
+    public static void main(String[] args) {
+        // Cria e exibe a janela
+        new VotacaoSwing().setVisible(true);
+    }
+}
