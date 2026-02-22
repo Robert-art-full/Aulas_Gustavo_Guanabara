@@ -1,0 +1,97 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
+
+ class MainSwing extends JFrame {
+
+    private JTextArea areaTexto;
+    private JTextField campoLimite;
+    private JTextField campoIgnorar;
+    private JTextField campoParar;
+    private JButton botaoExecutar;
+
+    public MainSwing() {
+
+        setTitle("Simulador Dinâmico de Cambalhotas");
+        setSize(550, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
+
+        criarComponentes();
+    }
+
+    private void criarComponentes() {
+
+        JPanel painelTopo = new JPanel(new GridLayout(3, 2, 5, 5));
+
+        painelTopo.add(new JLabel("Limite do contador:"));
+        campoLimite = new JTextField("10");
+        painelTopo.add(campoLimite);
+
+        painelTopo.add(new JLabel("Números para ignorar (ex: 2,3,4):"));
+        campoIgnorar = new JTextField("2,3,4");
+        painelTopo.add(campoIgnorar);
+
+        painelTopo.add(new JLabel("Parar no número:"));
+        campoParar = new JTextField("7");
+        painelTopo.add(campoParar);
+
+        areaTexto = new JTextArea();
+        areaTexto.setEditable(false);
+        areaTexto.setFont(new Font("Consolas", Font.PLAIN, 15));
+
+        botaoExecutar = new JButton("Executar");
+
+        botaoExecutar.addActionListener(e -> executar());
+
+        add(painelTopo, BorderLayout.NORTH);
+        add(new JScrollPane(areaTexto), BorderLayout.CENTER);
+        add(botaoExecutar, BorderLayout.SOUTH);
+    }
+
+    private void executar() {
+
+        areaTexto.setText("");
+
+        try {
+
+            int limite = Integer.parseInt(campoLimite.getText());
+            int parar = Integer.parseInt(campoParar.getText());
+
+            String[] ignorarArray = campoIgnorar.getText().split(",");
+            Set<Integer> ignorarSet = new HashSet<>();
+
+            for (String num : ignorarArray) {
+                ignorarSet.add(Integer.parseInt(num.trim()));
+            }
+
+            int cc = 0;
+
+            while (cc < limite) {
+                cc++;
+
+                if (ignorarSet.contains(cc)) {
+                    continue;
+                }
+
+                if (cc == parar) {
+                    break;
+                }
+
+                areaTexto.append("Cambalhota " + cc + "\n");
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Digite valores válidos!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MainSwing().setVisible(true));
+    }
+}
