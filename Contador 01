@@ -1,0 +1,10 @@
+public class Main {
+    public static void main(String[] args) {
+        int cc = 1; //cc = contador de cambalhota
+        while (cc<=20) {
+            System.out.println("Cambalhota " + (cc));
+            cc++;
+        }
+
+    }
+}
