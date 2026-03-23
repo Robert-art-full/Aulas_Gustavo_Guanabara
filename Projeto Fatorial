@@ -1,0 +1,73 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class ProjetoFatorial extends JFrame {
+
+    private JTextField txtNumero;
+    private JButton btnCalcular;
+    private JLabel lblResultado;
+    private JLabel lblConta;
+
+    public ProjetoFatorial() {
+        setTitle("Projeto Fatorial");
+        setSize(350, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new FlowLayout());
+
+        add(new JLabel("Digite um número (0 a 12):"));
+
+        txtNumero = new JTextField(10);
+        add(txtNumero);
+
+        btnCalcular = new JButton("Calcular");
+        add(btnCalcular);
+
+        lblConta = new JLabel("");
+        add(lblConta);
+
+        lblResultado = new JLabel("");
+        add(lblResultado);
+
+        btnCalcular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularFatorial();
+            }
+        });
+    }
+
+    private void calcularFatorial() {
+        try {
+            int num = Integer.parseInt(txtNumero.getText());
+
+            if (num < 0 || num > 12) {
+                JOptionPane.showMessageDialog(this, "Digite um número entre 0 e 12!");
+                return;
+            }
+
+            int fatorial = 1;
+            String conta = "";
+
+            for (int i = num; i > 1; i--) {
+                fatorial *= i;
+                conta += i + " x ";
+            }
+
+            conta += "1";
+
+            lblConta.setText(num + "! = " + conta);
+            lblResultado.setText("Resultado: " + fatorial);
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Digite um número válido!");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ProjetoFatorial().setVisible(true);
+        });
+    }
+}
