@@ -1,0 +1,82 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class SistemaContador extends JFrame {
+
+    private JSlider sldInicio, sldFim, sldPasso;
+    private JButton btnContar;
+    private JList<String> lista;
+    private DefaultListModel<String> modelo;
+
+    public SistemaContador() {
+        setTitle("Contador");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        // Sliders
+        sldInicio = new JSlider(0, 6, 0);
+        sldFim = new JSlider(0, 20, 10);
+        sldPasso = new JSlider(1, 5, 1);
+
+        // Labels dinâmicos
+        JLabel lblInicio = new JLabel("Início: 0");
+        JLabel lblFim = new JLabel("Fim: 10");
+        JLabel lblPasso = new JLabel("Passo: 1");
+
+        // Atualizar valores dos sliders
+        sldInicio.addChangeListener(e -> lblInicio.setText("Início: " + sldInicio.getValue()));
+        sldFim.addChangeListener(e -> lblFim.setText("Fim: " + sldFim.getValue()));
+        sldPasso.addChangeListener(e -> lblPasso.setText("Passo: " + sldPasso.getValue()));
+
+        // Botão
+        btnContar = new JButton("Contar");
+
+        // Lista
+        modelo = new DefaultListModel<>();
+        lista = new JList<>(modelo);
+        JScrollPane scroll = new JScrollPane(lista);
+        scroll.setPreferredSize(new Dimension(100, 150));
+
+        // Ação do botão
+        btnContar.addActionListener(e -> contar());
+
+        // Adicionando na tela
+        add(lblInicio);
+        add(sldInicio);
+
+        add(lblFim);
+        add(sldFim);
+
+        add(lblPasso);
+        add(sldPasso);
+
+        add(btnContar);
+        add(scroll);
+    }
+
+    private void contar() {
+        modelo.clear();
+
+        int inicio = sldInicio.getValue();
+        int fim = sldFim.getValue();
+        int passo = sldPasso.getValue();
+
+        if (inicio <= fim) {
+            for (int i = inicio; i <= fim; i += passo) {
+                modelo.addElement(String.valueOf(i));
+            }
+        } else {
+            for (int i = inicio; i >= fim; i -= passo) {
+                modelo.addElement(String.valueOf(i));
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new SistemaContador().setVisible(true);
+        });
+    }
+}
