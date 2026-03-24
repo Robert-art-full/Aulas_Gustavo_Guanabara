@@ -1,0 +1,62 @@
+import javax.swing.*;
+
+class ExercicioRepita {
+
+    public static void main(String[] args) {
+
+        int numero;
+        int totalValores = 0;
+        int totalPares = 0;
+        int totalImpares = 0;
+        int acimaDe100 = 0;
+        int soma = 0;
+
+        while (true) {
+
+            String input = JOptionPane.showInputDialog(null,
+                    "Digite um número (0 para parar):");
+
+            // Se cancelar
+            if (input == null) {
+                break;
+            }
+
+            try {
+                numero = Integer.parseInt(input);
+
+                // 🔴 PARAR quando digitar 0
+                if (numero == 0) {
+                    break;
+                }
+
+                totalValores++;
+                soma += numero;
+
+                if (numero % 2 == 0) {
+                    totalPares++;
+                } else {
+                    totalImpares++;
+                }
+
+                if (numero > 100) {
+                    acimaDe100++;
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Digite um número válido!");
+            }
+        }
+
+        double media = (totalValores > 0) ? (double) soma / totalValores : 0;
+
+        String resultado = "Resultado:\n"
+                + "----------------------\n"
+                + "Total de Valores: " + totalValores + "\n"
+                + "Total de Pares: " + totalPares + "\n"
+                + "Total de Ímpares: " + totalImpares + "\n"
+                + "Acima de 100: " + acimaDe100 + "\n"
+                + "Média dos valores: " + String.format("%.2f", media);
+
+        JOptionPane.showMessageDialog(null, resultado);
+    }
+}
