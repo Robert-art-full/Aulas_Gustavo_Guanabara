@@ -1,0 +1,93 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
+
+class VetorPosicoes {
+
+    private int[] vetor = new int[10];
+    private int tamanho = 0;
+
+    private DefaultTableModel tableModel;
+    private JTextField campoEntrada;
+
+    public VetorPosicoes() {
+        JFrame frame = new JFrame("Vetor com Posições");
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        // Campo de entrada
+        campoEntrada = new JTextField();
+        frame.add(campoEntrada, BorderLayout.NORTH);
+
+        // Tabela (Posição | Valor)
+        tableModel = new DefaultTableModel(new Object[]{"Posição", "Valor"}, 0);
+        JTable tabela = new JTable(tableModel);
+        frame.add(new JScrollPane(tabela), BorderLayout.CENTER);
+
+        // Botões
+        JPanel painel = new JPanel();
+
+        JButton btnAdd = new JButton("Adicionar");
+        JButton btnRemove = new JButton("Remover");
+        JButton btnOrdenar = new JButton("Ordenar");
+
+        painel.add(btnAdd);
+        painel.add(btnRemove);
+        painel.add(btnOrdenar);
+
+        frame.add(painel, BorderLayout.SOUTH);
+
+        // ADICIONAR
+        btnAdd.addActionListener((ActionEvent e) -> {
+            try {
+                int valor = Integer.parseInt(campoEntrada.getText());
+
+                if (tamanho < vetor.length) {
+                    vetor[tamanho] = valor;
+                    tamanho++;
+                    atualizarTabela();
+                    campoEntrada.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Vetor cheio!");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Digite um número válido!");
+            }
+        });
+
+        // REMOVER (último)
+        btnRemove.addActionListener((ActionEvent e) -> {
+            if (tamanho > 0) {
+                tamanho--;
+                vetor[tamanho] = 0;
+                atualizarTabela();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Vetor vazio!");
+            }
+        });
+
+        // ORDENAR
+        btnOrdenar.addActionListener((ActionEvent e) -> {
+            Arrays.sort(vetor, 0, tamanho);
+            atualizarTabela();
+        });
+
+        frame.setVisible(true);
+    }
+
+    private void atualizarTabela() {
+        tableModel.setRowCount(0);
+
+        for (int i = 0; i < tamanho; i++) {
+            tableModel.addRow(new Object[]{i, vetor[i]});
+        }
+    }
+
+    public static void main(String[] args) {
+        new VetorPosicoes();
+    }
+}
