@@ -1,0 +1,84 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+ class CalculoFatorial extends JFrame {
+
+    private JTextField txtNumero;
+    private JButton btnCalcular;
+    private JLabel lblCalculo;
+    private JLabel lblResultado;
+
+    public CalculoFatorial() {
+
+        setTitle("Calculadora de Fatorial");
+        setSize(500, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+
+        JLabel lblNumero = new JLabel("Digite um número:");
+        lblNumero.setBounds(20, 20, 120, 25);
+        add(lblNumero);
+
+        txtNumero = new JTextField();
+        txtNumero.setBounds(150, 20, 100, 25);
+        add(txtNumero);
+
+        btnCalcular = new JButton("Calcular");
+        btnCalcular.setBounds(130, 60, 120, 30);
+        add(btnCalcular);
+
+        lblCalculo = new JLabel("Cálculo: ");
+        lblCalculo.setBounds(20, 110, 450, 25);
+        add(lblCalculo);
+
+        lblResultado = new JLabel("Resultado: ");
+        lblResultado.setBounds(20, 150, 450, 25);
+        add(lblResultado);
+
+        btnCalcular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    int numero = Integer.parseInt(txtNumero.getText());
+
+                    if (numero < 0) {
+                        lblResultado.setText("Resultado: Não existe fatorial negativo!");
+                        lblCalculo.setText("Cálculo: ");
+                        return;
+                    }
+
+                    long fatorial = 1;
+                    StringBuilder conta = new StringBuilder();
+
+                    for (int i = numero; i >= 1; i--) {
+                        fatorial *= i;
+                        conta.append(i);
+
+                        if (i > 1) {
+                            conta.append(" x ");
+                        }
+                    }
+
+                    if (numero == 0) {
+                        conta.append("1");
+                    }
+
+                    lblCalculo.setText("Cálculo: " + conta);
+                    lblResultado.setText("Resultado: " + numero + "! = " + fatorial);
+
+                } catch (NumberFormatException ex) {
+                    lblCalculo.setText("Cálculo: ");
+                    lblResultado.setText("Resultado: Digite um número válido!");
+                }
+            }
+        });
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new CalculoFatorial();
+    }
+}
