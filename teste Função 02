@@ -1,0 +1,24 @@
+public class Main {
+    public static void main(String[] args) {
+        //public -> qualquer um de fora pode acessar
+        //static -> torna o metodo estatico, você não precisar transformar em objeto para poder utilizado
+        //void -> o metodo nao vai retornar um valor
+        //main -> é o ponto de entrada da sua aplicação Java
+
+        System.out.println("Vai começar a cotagem!!!");
+        System.out.println(Operacoes.contador(1,5));//chamei o meu metodo contador que esta na class operações
+
+
+    }
+}
+
+//public class Operacoes {
+
+    public static String contador(int i, int f) {
+        String s = "";
+        for (int c =i; c <= f; c++) {
+            s += c + " ";
+        }
+        return s;
+    }
+}
